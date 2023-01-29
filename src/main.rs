@@ -30,8 +30,8 @@ async fn main() -> Result<(), es::Error> {
 }
 
 fn events_of(client: impl es::Client) -> impl Stream<Item = Result<(), ()>> {
-	client
-		.stream()
-		.map_ok(|_| {})
-		.map_err(|err| eprintln!("error streaming events: {:?}", err))
+	client.stream().map_ok(|_| {}).map_err(|err| {
+		eprintln!("error streaming events: {:?}", err);
+		std::thread::sleep(std::time::Duration::from_secs(1));
+	})
 }
